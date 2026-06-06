@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+
+<html lang="ja">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0,
+
+maximum-scale=1.0, user-scalable=no">
+
+<title>灯史ナギ - AR Living Support</title>
+
+<style>
+
+body, html { margin: 0; padding: 0; width: 100%; height: 100%; background: #000;
+
+overflow: hidden; font-family: sans-serif; }
+
+/* ① ARの視界（スマホの背面カメラ映像） */
+
+#camera-bg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit:
+
+cover; z-index: 1; }
+
+/* ② ARグラス風の近未来UI（HUD） */
+
+.hud-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 2;
+
+border: 2px solid rgba(0, 255, 204, 0.3); box-shadow: inset 0 0 40px rgba(0, 255, 204, 0.15);
+
+pointer-events: none; box-sizing: border-box; padding: 20px; }
+
+.hud-header { color: #00ffcc; font-family: monospace; font-size: 11px; text-shadow: 0 0
+
+5px #00ffcc; line-height: 1.4; }
+
+/* ③ 現実に実在する「灯史ナギ（2次元）」の配置 */
+
+.nagi-container { position: absolute; bottom: 20px; right: 5%; z-index: 3; display: flex;
+
+flex-direction: column; align-items: center; width: 180px; }
+
+#nagi-img { font-size: 80px; filter: drop-shadow(0 0 10px rgba(255,255,255,0.5));
+
+cursor: pointer; animation: breathe 3s infinite alternate; }
+
+@keyframes breathe { from { transform: translateY(0); } to { transform: translateY(-8px);
+
+} }
+
+/* ④ ナギのサポートセリフ（吹き出し） */
+
+.speech-bubble { background: rgba(15, 23, 42, 0.85); border: 1px solid #00ffcc;
+
+border-radius: 8px; padding: 12px; color: #fff; font-size: 12px; line-height: 1.5; text-shadow: 0
+
+0 2px #000; box-shadow: 0 4px 15px rgba(0,0,0,0.5); width: 220px; position: absolute;
+
+bottom: 130px; right: 5%; z-index: 4; }
+
+/* ⑤ 操作パネル（アラーム・マップ・危険予知） */
+
+.control-panel { position: absolute; top: 20px; right: 20px; z-index: 5; display: flex;
+
+flex-direction: column; gap: 8px; width: 150px; }
+
+.btn { background: rgba(33, 38, 45, 0.8); border: 1px solid #30363d; color: #c9d1d9;
+
+padding: 10px; font-size: 11px; border-radius: 6px; cursor: pointer; font-weight: bold;
+
+text-align: left; }
+
+.btn:hover { background: #30363d; border-color: #8b949e; color: #00ffcc; }
+
+.active-mode { border-color: #ff007f !important; color: #ff007f !important; }
+
+</style>
+
+</head>
+
+<body>
+
+<!-- スマートフォンの背面カメラで現実世界をシースルー表示 --><video id="camera-bg" autoplay playsinline></video>
+
+<!-- ARレンズのデジタル表示 -->
+
+<div class="hud-overlay">
+
+<div class="hud-header">
+
+■ SYSTEM: NAGI
+
+AR
+
+INTEGRATION<br>
+
+_
+
+_
+
+■ CAMERA: ACTIVE (ENV
+
+SCAN
+
+_
+
+_
+
+ON)<br>
+
+■ MODE: <span id="current-mode" style="color:#ff007f;">通常サポート</span>
+
+</div>
+
+</div>
+
+<!-- 灯史ナギのセリフ（ここが状況に合わせて変化します） -->
+
+<div class="speech-bubble" id="speech">
+
+「
+
+…AR同期完了。灯史ナギです。お前の現実の生活を、このレンズの裏から静かにサポー
+
+トしてあげます」
+
+</div>
+
+<!-- 2次元の灯史ナギ（将来ここをイラスト画像 <img src="nagi.png"> に差し替えます） -->
+
+<div class="nagi-container">
+
+<div id="nagi-img" onclick="tapNagi()">┠( ── )┨</div>
+
+<div style="font-size:10px; color:#00ffcc; background:rgba(0,0,0,0.6); padding:2px 6px;
+
+border-radius:4px; margin-top:5px;">灯史ナギ</div>
+
+</div>
+
+<!-- 生活サポート機能の切り替えスイッチ -->
+
+<div class="control-panel">
+
+<button class="btn" id="btn-alarm" onclick="modeAlarm()">⏱ 生活アラーム</button>
+
+<button class="btn" id="btn-map" onclick="modeMap()">🗺 マップ案内</button>
+
+<button class="btn" id="btn-danger" onclick="modeDanger()">⚠ 危険予知AI</button>
+
+</div>
+
+<!-- アプリの挙動をコントロールするスクリプトファイルを読み込み -->
+
+<script src="app.js"></script>
+
+</body>
+
+</html>
+
